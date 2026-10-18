@@ -1,0 +1,8 @@
+.workflow/
+dist/
+*.kw-backup
+__pycache__/
+*.pyc
+.DS_Store
+._*
+media/out/

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>KnowledgeWala social card</title>
+<style>
+  :root{--bg:#0b1220;--card:#121c33;--ink:#f4f7ff;--mut:#9fb0d3;--acc:#ffb703;--ok:#2ec4b6;--line:#24324f}
+  *{box-sizing:border-box;margin:0}
+  body{width:1200px;height:630px;background:radial-gradient(900px 500px at 85% 10%,#1b2b52 0,var(--bg) 60%);color:var(--ink);
+       font-family:"Segoe UI",system-ui,Roboto,sans-serif;position:relative;overflow:hidden}
+  .brand{position:absolute;top:34px;left:56px;font-weight:800;letter-spacing:.12em;font-size:22px}
+  .brand i{font-style:normal;color:var(--acc)}
+  .tag{position:absolute;top:34px;right:56px;color:var(--mut);font-size:20px}
+  h1{position:absolute;top:100px;left:56px;width:640px;font-size:60px;line-height:1.08;font-weight:800}
+  h1 em{font-style:normal;color:var(--acc)}
+  p.sub{position:absolute;top:340px;left:56px;width:600px;font-size:25px;line-height:1.4;color:var(--mut)}
+  .cmd{position:absolute;left:56px;bottom:56px;background:#0a1020;border:1px solid var(--line);border-radius:12px;padding:16px 22px;
+       font:600 23px Consolas,monospace;color:var(--ok)}
+  .flow{position:absolute;right:56px;top:100px;width:420px;display:flex;flex-direction:column;gap:10px}
+  .s{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:10px;padding:11px 16px;font-size:20px}
+  .s.g{border-left-color:var(--ok)} .s b{color:var(--acc)} .s.g b{color:var(--ok)}
+  .loop{border:2px dashed var(--acc);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+  .loop .l{color:var(--acc);font-size:15px;font-weight:700;letter-spacing:.08em}
+  .foot{position:absolute;right:56px;bottom:56px;color:var(--mut);font-size:19px}
+</style></head><body>
+  <div class="brand">KNOWLEDGE<i>WALA</i></div>
+  <div class="tag">Open source &middot; MIT</div>
+  <h1>An AI <em>dev team</em> for Claude Code. With real gates.</h1>
+  <p class="sub">15 focused subagents. Idea or Jira ticket to tested, reviewed code. Human approval gates and capped fix loops.</p>
+  <div class="cmd">/dev-workflow "your idea"</div>
+  <div class="flow">
+    <div class="s"><b>1</b> Requirements &rarr; Jira</div>
+    <div class="s g"><b>&#10003;</b> You approve</div>
+    <div class="s"><b>2</b> Design + task plan</div>
+    <div class="s g"><b>&#10003;</b> approved: T1, T2</div>
+    <div class="loop"><div class="l">BUILD LOOP &middot; MAX 3 ROUNDS</div>
+      <div class="s"><b>3</b> Code &rarr; test &middot; security &middot; perf</div>
+      <div class="s"><b>4</b> Review &rarr; fix list only</div></div>
+  </div>
+  <div class="foot">github.com/dharmsahu-hash/knowledgewala-agentic-sdlc</div>
+</body></html>

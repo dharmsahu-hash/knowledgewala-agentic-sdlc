@@ -1,0 +1,13 @@
+{
+  "name": "knowledgewala-agentic-sdlc",
+  "version": "1.2.0",
+  "description": "KnowledgeWala Agentic SDLC: one /dev-workflow command and 15 subagents that take an idea or Jira ticket through requirements, design, gated coding, a bounded test/security/review loop, docs and QA.",
+  "author": {
+    "name": "KnowledgeWala",
+    "url": "https://github.com/dharmsahu-hash"
+  },
+  "homepage": "https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc",
+  "repository": "https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc",
+  "license": "MIT",
+  "keywords": ["sdlc", "agents", "subagents", "workflow", "jira", "knowledgewala"]
+}
