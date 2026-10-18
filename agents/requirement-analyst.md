@@ -2,6 +2,7 @@
 name: requirement-analyst
 description: Converts business requirements (or a ticket analysis) into functional and non-functional requirements and Jira-ready epics/stories with acceptance criteria. Run by /dev-workflow; you can also call it directly after business-analyst or ticket-analyst, or whenever a ticket must be drafted or split.
 tools: Read, Grep, Glob
+disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

@@ -2,6 +2,7 @@
 name: documentation-generator
 description: Creates or updates README, setup/run instructions, API docs, architecture notes and changelog for code that has passed review. Run by /dev-workflow; you can also call it directly after code-reviewer returns APPROVED or APPROVED WITH FOLLOW-UPS for the last task.
 tools: Read, Grep, Glob, Write
+disallowedTools: Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

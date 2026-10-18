@@ -2,6 +2,7 @@
 name: deployment-devops-agent
 description: Executes a deployment only with explicit approval, after QA has passed: a LOCAL run (start the app, verify it, report URL and stop command) or a hosted deployment (CI/CD trigger, hosting config, release build, rollback). Plan only unless the prompt says "approved: deploy <app/release> to <env>" (env may be `local`). Highest-risk agent with ai-coding-agent.
 tools: Read, Grep, Glob, Bash
+disallowedTools: Write, Edit, NotebookEdit
 model: sonnet
 ---
 

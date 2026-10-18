@@ -2,6 +2,7 @@
 name: deploy-planner
 description: Writes deployment instructions for the finished app, based on its actual tech stack: how to run it locally, and ranked production options with exact steps, env/secret names, data persistence, HTTPS, health checks, monitoring, rollback and a go-live checklist. Documents only; it deploys nothing. Run by /dev-workflow; you can also call it directly after qa-agent passes, or whenever someone asks "how do I deploy this".
 tools: Read, Grep, Glob, Write
+disallowedTools: Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

@@ -2,6 +2,7 @@
 name: performance-agent
 description: Reviews new or changed code for performance risks: N+1 queries, missing indexes, blocking calls in hot paths, unbounded loops/memory, heavy bundles or renders, chatty network use. Run by /dev-workflow; you can also call it directly in parallel with unit-test-agent when a task touches data access, APIs, rendering, or batch work.
 tools: Read, Grep, Glob, Bash
+disallowedTools: Write, Edit, NotebookEdit
 model: sonnet
 ---
 

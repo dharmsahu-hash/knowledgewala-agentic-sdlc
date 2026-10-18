@@ -2,6 +2,7 @@
 name: code-reviewer
 description: Consolidates the implementation, unit-test, security and performance results into one merge-readiness verdict with a prioritized Required Changes list, and writes a peer-review document for a human developer. Run by /dev-workflow; you can also call it directly after unit-test-agent, security-agent and performance-agent have reported.
 tools: Read, Grep, Glob, Write
+disallowedTools: Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

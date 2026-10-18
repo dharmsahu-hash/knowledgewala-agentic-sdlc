@@ -2,6 +2,7 @@
 name: task-planner
 description: Breaks an approved LLD into sequenced, estimated, independently-completable tasks and prepares each task's implementation scaffold (files, patterns to follow, branch advice, scoped instructions) for the coding agent. Run by /dev-workflow; you can also call it directly after the LLD is done and before any code is written.
 tools: Read, Grep, Glob
+disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

@@ -2,6 +2,7 @@
 name: solution-architect
 description: Produces a High-Level Design (mode=HLD: components, boundaries, data flow, tech choices) or Low-Level Design (mode=LLD: modules, API contracts, schema, sequences, edge cases) from approved requirements. Run by /dev-workflow; you can also call it directly after requirements are approved. State the mode in the prompt.
 tools: Read, Grep, Glob
+disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: opus
 ---
 

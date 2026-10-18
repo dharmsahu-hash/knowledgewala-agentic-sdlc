@@ -2,6 +2,7 @@
 name: ticket-analyst
 description: Reads a Jira ticket or bug report, maps it to the repo/files that own it, and returns a scoped plan without changing anything. Run by /dev-workflow; you can also call it directly when a ticket key or bug report appears and no plan is approved yet.
 tools: Read, Grep, Glob
+disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

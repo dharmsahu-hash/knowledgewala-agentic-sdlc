@@ -2,6 +2,7 @@
 name: business-analyst
 description: Turns a raw product idea into structured business requirements: goals, users, scope, success metrics, constraints, risks. Run by /dev-workflow; you can also call it directly at the start of any new feature or product idea, before requirement work.
 tools: Read, Grep, Glob
+disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 

@@ -2,6 +2,7 @@
 name: ops-monitor
 description: After a deployment, checks health from available logs, metrics, uptime/analytics and error trackers, and when something is wrong performs root-cause analysis (timeline, evidence, hypothesis vs confirmed, recommended action). Also handles directly reported incidents. Read-only. Not run by default.
 tools: Read, Grep, Glob, Bash
+disallowedTools: Write, Edit, NotebookEdit
 model: sonnet
 ---
 

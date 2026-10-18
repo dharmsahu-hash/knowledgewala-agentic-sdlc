@@ -114,11 +114,36 @@ Measured on the demo run (4 tasks, tiny app): **21 subagent calls, about 0.5M su
 | a single agent | "review this diff for security", "plan these tasks", "write the deploy guide" |
 | neither | a typo, a config tweak, an exploratory spike: just ask Claude directly |
 
+## See what the agents did (logs and observability)
+
+Three layers, from zero-setup to live:
+
+| Layer | You get | Setup | Where it lands |
+|---|---|---|---|
+| **Run report** | totals, a table per subagent (start, seconds, turns, tools used, output tokens, files written, status/verdict), checks (did every coding prompt contain `approved:`, which agents ran in parallel, permission denials and why), shell commands run | none: it reads Claude Code's own transcripts | `python scripts/kw_report.py` from the app folder writes `run-report.md` and `run-timeline.log` into `.workflow/<run>/` |
+| **Live log** | one line per subagent start/stop, tool call (with duration), failure and permission denial, as it happens | opt-in hook: `python install/kw_install.py observe on` (add `--scope project` for one folder), then restart | `.workflow/<run>/run.log` and `events.jsonl`, in the folder where the run is happening |
+| **Audit trail** | stage, agent, task, iteration, status, verdict, artifact, note per stage | built into the skill | `state.json`, `history` array; `kw_report.py` merges it |
+
+A real `run.log` excerpt:
+```
+20:01:02  START   security-agent id=ae36fc47
+20:01:04  TOOL    security-agent         Read       hello.txt
+20:01:06  END     security-agent id=ae36fc47 | hello from the observability test
+```
+and a real row from a run report:
+`| 9 | security-agent | Security review T1 | 19:36:05 | 30 | 9 | Read 5, Glob 1, Bash 1 | 4,192 | - | READY |`
+
+What it will and will not do:
+- It logs *what happened*: tool name, file name, a truncated command, agent, timing. It never logs tool results or file contents; obvious secrets (tokens, `password=...`) are masked; files stop growing at 5 MB; the live logger does nothing outside a workflow run and never prints to the session.
+- The cost line appears only for headless (`claude -p`) runs, where Claude Code records it. Interactive sessions get exact token totals but no dollar figure.
+- The report reads Claude Code's transcript files. That format is not a documented, stable interface (verified on Claude Code 2.1.302); a future update could break the report until it is adjusted. The live logger uses the documented hook events.
+- The hook runs a small Python process per tool call (tens of milliseconds); that is why it is opt-in.
+
 ## What is enforced and what is convention
 
 | | Enforced by | Strength |
 |---|---|---|
-| Analysts cannot edit files | tool grants (`tools:` has no Write/Edit/Bash) | **hard** |
+| Analysts cannot edit files | `tools:` allowlist plus a `disallowedTools:` denylist. In a probe on Claude Code 2.1.302, a plugin-loaded agent ignored the allowlist alone and wrote a file; with the denylist it was refused. Verified for one agent so far, not all 15 | **strong, partly verified** |
 | Reviewers/security/perf/ops cannot edit files | prompt instruction only (they hold Bash or Write for scanners, measurements, reports) | convention |
 | `approved:` before coding or deploying | agent instruction; the orchestrator is the same model that writes the prompt | **convention**, not a lock |
 | Only the orchestrator writes to Jira | agents have no Jira tools | **hard** for agents |

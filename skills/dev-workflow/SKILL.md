@@ -42,7 +42,7 @@ When this skill is installed as a plugin, Claude Code namespaces its agents: `bu
 - `--resume RUN-ID`: load `state.json`, continue at `next_stage`.
 - `--status`: print `state.json` summary only.
 - `RUN-ID` is `YYYYMMDD-<app-slug>` (add `-2`, `-3` if that folder already exists). Never `RUN-001`.
-- Create `<app_dir>\.workflow\<RUN-ID>\state.json`: `{run_id, app_dir, jira_project, stage, next_stage, tasks:{ID:{status,iteration,risk}}, open_questions, loop_counters}`. Update it after every stage so any run can resume.
+- Create `<app_dir>\.workflow\<RUN-ID>\state.json`: `{run_id, app_dir, jira_project, stage, next_stage, tasks:{ID:{status,iteration,risk}}, open_questions, loop_counters, history:[]}`. Update it after every stage so any run can resume. After every stage also append one entry to `history`: `{ts (ISO time), stage, agent, task, iteration, status, verdict, artifact, note}`. It is the run's audit trail; `kw_report.py` merges it into the run report.
 
 ## Unattended runs (only with explicit pre-authorisation)
 
@@ -134,7 +134,6 @@ Expect roughly 3 subagent calls per task instead of 5.
 
 ## Step 4: Reporting
 
-At the end of every run (including a stop) print a closing report: stages run, subagent calls per agent, findings caught and their status, test results with the real counts, every assumption you accepted, and every place you deviated from this skill and why. Do not claim a check you did not run.
-
+At the end of every run (including a stop) print a closing report: stages run, subagent calls per agent, findings caught and their status, test results with the real counts, every assumption you accepted, and every place you deviated from this skill and why. Do not claim a check you did not run. End it with: "Full timeline, tokens per agent and permission denials: run `python <plugin or install folder>/scripts/kw_report.py` in this folder (writes `run-report.md` and `run-timeline.log` into the run folder)."
 
 After each stage give 1-3 sentences: stage, status, next step. At a stop point give one paragraph: where things stand, what is needed from the human. Offer to show any stage's full artifact.

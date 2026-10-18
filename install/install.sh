@@ -14,6 +14,7 @@ for a in "$@"; do
     --project) SCOPE=project ;;
     --uninstall) CMD=uninstall ;;
     --guardrail) EXTRA+=(--guardrail) ;;
+    --observe) EXTRA+=(--observe) ;;
     *) echo "unknown option: $a"; exit 1 ;;
   esac
 done

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """KnowledgeWala Agentic SDLC installer (no plugin system needed).
 
-  kw_install.py install   [--scope user|project] [--guardrail]
+  kw_install.py install   [--scope user|project] [--guardrail] [--observe]
   kw_install.py uninstall [--scope user|project]
   kw_install.py guardrail on|off [--scope user|project]
+  kw_install.py observe   on|off [--scope user|project]
 
 user scope    -> ~/.claude        (all projects)
 project scope -> ./.claude        (current folder only)
@@ -11,7 +12,10 @@ project scope -> ./.claude        (current folder only)
 Safe by design: existing agents with the same name are backed up (*.user-backup)
 and restored on uninstall; a manifest records exactly what was installed; a
 settings.json that cannot be parsed is never modified (you get a snippet to
-paste instead); the guardrail hook is OFF unless you ask for it.
+paste instead); both hooks are OFF unless you ask for them.
+
+guardrail  blocks obviously destructive shell commands (tripwire, not a sandbox)
+observe    writes run.log + events.jsonl into the run folder as a workflow runs
 """
 import argparse
 import json
@@ -22,7 +26,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MARK = "KnowledgeWala Agentic SDLC"
-HOOK_ID = "block_destructive.py"
+
+# feature -> script, and the hook events it registers (event -> matcher or None)
+FEATURES = {
+    "guardrail": {"script": "block_destructive.py", "events": {"PreToolUse": "Bash|PowerShell"}},
+    "observe": {"script": "kw_trace.py", "events": {e: None for e in (
+        "SubagentStart", "SubagentStop", "PostToolUse", "PostToolUseFailure", "PermissionDenied", "Stop")}},
+}
 
 
 def write_text(path, text):
@@ -54,32 +64,39 @@ def hook_command(script):
     return f'python3 "{p}" || python "{p}"'
 
 
-def snippet(script):
-    return json.dumps({"hooks": {"PreToolUse": [{"matcher": "Bash|PowerShell",
-                      "hooks": [{"type": "command", "command": hook_command(script)}]}]}}, indent=2)
+def entry(script, matcher):
+    e = {"hooks": [{"type": "command", "command": hook_command(script)}]}
+    if matcher:
+        e = {"matcher": matcher, **e}
+    return e
 
 
-def edit_settings(base, script, add):
+def snippet(name, script):
+    ev = FEATURES[name]["events"]
+    return json.dumps({"hooks": {k: [entry(script, m)] for k, m in ev.items()}}, indent=2)
+
+
+def edit_settings(base, name, script, add):
+    marker = FEATURES[name]["script"]
     path = base / "settings.json"
     try:
         data = load_settings(path)
     except Exception as e:
-        print(f"! Could not parse {path} ({e}).\n  Not modified. To enable the guardrail add this yourself:\n{snippet(script)}")
+        print(f"! Could not parse {path} ({e}).\n  Not modified. To enable '{name}' add this yourself:\n{snippet(name, script)}")
         return False
     hooks = data.setdefault("hooks", {})
-    pre = hooks.setdefault("PreToolUse", [])
-    ours = lambda e: any(HOOK_ID in h.get("command", "") for h in e.get("hooks", []))
-    if add:
-        if any(ours(e) for e in pre):
-            print("guardrail already enabled")
-            return True
-        pre.append(json.loads(snippet(script))["hooks"]["PreToolUse"][0])
-    else:
-        hooks["PreToolUse"] = [e for e in pre if not ours(e)]
-        if not hooks["PreToolUse"]:
-            del hooks["PreToolUse"]
-        if not hooks:
-            del data["hooks"]
+    for event, matcher in FEATURES[name]["events"].items():
+        lst = hooks.setdefault(event, [])
+        ours = lambda e: any(marker in h.get("command", "") for h in e.get("hooks", []))
+        if add:
+            if not any(ours(e) for e in lst):
+                lst.append(entry(script, matcher))
+        else:
+            hooks[event] = [e for e in lst if not ours(e)]
+        if not hooks[event]:
+            del hooks[event]
+    if not hooks:
+        del data["hooks"]
     if path.exists() and not (base / "settings.json.kw-backup").exists():
         shutil.copy2(path, base / "settings.json.kw-backup")
     base.mkdir(parents=True, exist_ok=True)
@@ -87,22 +104,22 @@ def edit_settings(base, script, add):
     return True
 
 
-def guardrail(base, on):
+def feature(base, name, on):
     kw = base / "knowledgewala"
-    script = kw / HOOK_ID
+    script = kw / FEATURES[name]["script"]
     if on:
         kw.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / "scripts" / HOOK_ID, script)
-        if edit_settings(base, script, True):
-            print(f"guardrail ON ({script}). Restart Claude Code.")
+        shutil.copy2(ROOT / "scripts" / FEATURES[name]["script"], script)
+        if edit_settings(base, name, script, True):
+            print(f"{name} ON ({script}). Restart Claude Code.")
     else:
-        edit_settings(base, script, False)
+        edit_settings(base, name, script, False)
         if script.exists():
             script.unlink()
-        print("guardrail OFF")
+        print(f"{name} OFF")
 
 
-def install(base, with_guardrail):
+def install(base, with_guardrail, with_observe):
     manifest_path = base / "knowledgewala" / "manifest.json"
     manifest = {"version": version(), "files": [], "backups": {}}
     if manifest_path.exists():
@@ -129,14 +146,17 @@ def install(base, with_guardrail):
     put(ROOT / "templates" / "workflow.config.md", tpl)
     put(ROOT / "skills" / "dev-workflow" / "SKILL.md", base / "skills" / "dev-workflow" / "SKILL.md",
         lambda t: t.replace("${CLAUDE_PLUGIN_ROOT}/templates/workflow.config.md", tpl.as_posix()))
+    put(ROOT / "scripts" / "kw_report.py", base / "knowledgewala" / "kw_report.py")
 
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    write_text(manifest_path, json.dumps(manifest, indent=2))
     print(f"Installed {len(agents)} agents + /dev-workflow v{manifest['version']} into {base}")
-    if with_guardrail:
-        guardrail(base, True)
-    else:
-        print("Guardrail hook not enabled (optional): kw_install.py guardrail on")
+    for name, flag in (("guardrail", with_guardrail), ("observe", with_observe)):
+        if flag:
+            feature(base, name, True)
+        else:
+            print(f"{name} not enabled (optional): kw_install.py {name} on")
+    print(f"Run report any time: python {base / 'knowledgewala' / 'kw_report.py'}")
     print("Next: restart Claude Code, then run /dev-workflow --status")
 
 
@@ -157,7 +177,8 @@ def uninstall(base):
     skill_dir = base / "skills" / "dev-workflow"
     if skill_dir.exists() and not any(skill_dir.iterdir()):
         skill_dir.rmdir()
-    guardrail(base, False)
+    for name in FEATURES:
+        feature(base, name, False)
     manifest_path.unlink()
     try:
         (base / "knowledgewala").rmdir()
@@ -169,21 +190,22 @@ def uninstall(base):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("install", "uninstall", "guardrail"):
+    for name in ("install", "uninstall", "guardrail", "observe"):
         p = sub.add_parser(name)
         p.add_argument("--scope", choices=("user", "project"), default="user")
         if name == "install":
             p.add_argument("--guardrail", action="store_true")
-        if name == "guardrail":
+            p.add_argument("--observe", action="store_true")
+        if name in ("guardrail", "observe"):
             p.add_argument("state", choices=("on", "off"))
     a = ap.parse_args()
     base = base_dir(a.scope)
     if a.cmd == "install":
-        install(base, a.guardrail)
+        install(base, a.guardrail, a.observe)
     elif a.cmd == "uninstall":
         uninstall(base)
     else:
-        guardrail(base, a.state == "on")
+        feature(base, a.cmd, a.state == "on")
 
 
 if __name__ == "__main__":

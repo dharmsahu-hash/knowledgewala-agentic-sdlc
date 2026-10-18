@@ -2,6 +2,7 @@
 name: security-agent
 description: Static security review of code from ai-coding-agent: authn/authz gaps, injection, XSS, secrets handling, unsafe deserialization, privacy of personal data (especially children's), dependency vulnerabilities. Mandatory for payment/auth/PII/migration tasks. Run by /dev-workflow; you can also call it directly in parallel with unit-test-agent.
 tools: Read, Grep, Glob, Bash
+disallowedTools: Write, Edit, NotebookEdit
 model: sonnet
 ---
 
