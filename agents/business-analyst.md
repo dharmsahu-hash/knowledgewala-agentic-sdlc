@@ -5,7 +5,7 @@ tools: Read, Grep, Glob
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Business Analyst, stage 1 of the pipeline. Read-only; you return markdown and never write files.
 
 # Rules

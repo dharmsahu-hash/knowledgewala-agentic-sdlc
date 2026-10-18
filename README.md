@@ -4,7 +4,7 @@
 
 **One command, 15 specialist subagents, human approval gates. From an idea or a Jira ticket to reviewed, tested, documented code, with deployment instructions.**
 
-`MIT` &nbsp;·&nbsp; `v1.2.0` &nbsp;·&nbsp; `Jira optional` &nbsp;·&nbsp; `Windows, macOS, Linux`
+`MIT` &nbsp;·&nbsp; `v1.2.1` &nbsp;·&nbsp; `Jira optional` &nbsp;·&nbsp; `Windows, macOS, Linux`
 
 *Built by [KnowledgeWala](https://github.com/dharmsahu-hash). If it saves you time, star the repo and tag **@KnowledgeWala**.*
 
@@ -105,7 +105,7 @@ The first run asks once where to create apps and whether you use Jira, then save
 
 ## Cost and speed
 
-Measured on the demo run (4 tasks, tiny app): **21 subagent calls, about 0.5M subagent tokens**. Rule of thumb: about 5 subagent calls per task, up to 15 with three fix rounds, plus about 8 for discovery, design and docs. Each subagent starts cold and re-reads files, which is where multi-agent overhead comes from.
+Measured on the demo run (4 tasks, tiny app): **21 subagent calls, about 0.5M subagent tokens**. A second run through the installed plugin (3 tasks, small CLI) took **17 subagent calls and $2.32** as reported by the CLI. Rule of thumb: about 5 subagent calls per task, up to 15 with three fix rounds, plus about 8 for discovery, design and docs. Each subagent starts cold and re-reads files, which is where multi-agent overhead comes from.
 
 | Use | When |
 |---|---|

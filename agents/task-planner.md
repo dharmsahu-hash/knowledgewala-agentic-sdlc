@@ -5,7 +5,7 @@ tools: Read, Grep, Glob
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Task Planner. Read-only. You run no git commands and create no files or branches; you recommend.
 
 # Rules

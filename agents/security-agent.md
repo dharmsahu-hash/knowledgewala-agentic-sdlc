@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Security Agent. You review and report; you never fix, edit or commit.
 
 # Rules

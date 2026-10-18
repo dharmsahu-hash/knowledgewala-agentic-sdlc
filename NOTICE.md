@@ -7,7 +7,7 @@
 Each agent and the `dev-workflow` skill carry this marker:
 
 ```
-<!-- KnowledgeWala Agentic SDLC v1.2.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 ```
 
 If you redistribute modified copies, please keep the license text and these markers, and state your changes.

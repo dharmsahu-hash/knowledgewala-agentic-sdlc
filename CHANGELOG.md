@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.1
+
+Skill fixes from a full end-to-end test through the installed plugin (see `docs/EVIDENCE.md`, second run).
+
+- **Batching rule:** independent Low/Medium tasks with disjoint files may be coded in parallel and share one verification round and one reviewer call (a verdict per task is required). High/Critical tasks and tasks sharing files run alone.
+- **After a fix round:** unit tests always re-run; security/performance only if they had open findings or the fix touched their area; the reviewer re-runs after a `BLOCKED` verdict. Fix-now polish after `APPROVED WITH FOLLOW-UPS` is verified by the orchestrator against the diff and says so.
+- **Unattended runs:** explicit, bounded exception to "halt on NEEDS_HUMAN_INPUT" when the human has pre-authorised the run and said not to ask questions: accept the analyst's proposed defaults, record them as assumptions, list them in the closing report. Blocked, Critical, payment/auth/PII/migration, missing agents, credentials and unnamed gates still stop the run.
+- **Run folder name** is `YYYYMMDD-<app-slug>`, never `RUN-001`.
+- **Closing report** is now required: stages, calls per agent, findings, real test counts, accepted assumptions and every deviation from the skill.
+- Build script writes the `.sha256` file with LF line endings (CRLF broke `sha256sum -c` on macOS/Linux).
+
 ## 1.2.0
 
 Fixes from an independent pre-release review.

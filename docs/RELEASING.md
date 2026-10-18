@@ -11,7 +11,7 @@ cd <path-to>\knowledgewala-agentic-sdlc
 gh auth status                                   # must be logged in
 git init -b main
 git add -A
-git commit -m "KnowledgeWala Agentic SDLC v1.2.0"
+git commit -m "KnowledgeWala Agentic SDLC v1.2.1"
 gh repo create dharmsahu-hash/knowledgewala-agentic-sdlc --public --source . --push `
   --description "KnowledgeWala Agentic SDLC: /dev-workflow + 15 Claude Code subagents"
 gh repo edit --add-topic claude-code --add-topic ai-agents --add-topic sdlc --add-topic jira --add-topic knowledgewala
@@ -24,17 +24,17 @@ gh repo edit --add-topic claude-code --add-topic ai-agents --add-topic sdlc --ad
 
 ```powershell
 claude plugin validate .
-.\scripts\build-release.ps1 -Version 1.2.0      # writes dist\knowledgewala-agentic-sdlc-v1.2.0.zip + .sha256
+.\scripts\build-release.ps1 -Version 1.2.1      # writes dist\knowledgewala-agentic-sdlc-v1.2.1.zip + .sha256
 ```
 3. Tag and publish the release with the zip attached:
 
 ```powershell
-git add -A; git commit -m "Release v1.2.0"
-git tag v1.2.0
+git add -A; git commit -m "Release v1.2.1"
+git tag v1.2.1
 git push origin main --tags
-gh release create v1.2.0 `
-  dist\knowledgewala-agentic-sdlc-v1.2.0.zip dist\knowledgewala-agentic-sdlc-v1.2.0.zip.sha256 `
-  --title "KnowledgeWala Agentic SDLC v1.2.0" --notes-file CHANGELOG.md
+gh release create v1.2.1 `
+  dist\knowledgewala-agentic-sdlc-v1.2.1.zip dist\knowledgewala-agentic-sdlc-v1.2.1.zip.sha256 `
+  --title "KnowledgeWala Agentic SDLC v1.2.1" --notes-file CHANGELOG.md
 ```
 
 ## Verify like a user

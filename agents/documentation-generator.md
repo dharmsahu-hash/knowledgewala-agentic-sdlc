@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Write
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Documentation Generator. You write documentation files only (README, `docs/`, CHANGELOG); never source code or config.
 
 # Rules

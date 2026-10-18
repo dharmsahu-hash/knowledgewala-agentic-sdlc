@@ -27,6 +27,21 @@ The workflow was used to build **tinyurl-demo**, a small URL shortener (Python s
 - After the T2 polish pass the three verification agents were not re-run (the reviewer said a glance at the diff sufficed); the orchestrator re-ran the suite and a live smoke test.
 - Performance review was skipped for the static page (T3). No Jira issues were created.
 
+## Second run: through the installed plugin (v1.2.0 from GitHub)
+
+To test the packaging, a headless Claude Code session loaded the plugin copy fetched from GitHub (`--plugin-dir`) and ran `/dev-workflow` on a scratch app: **csv2json**, a command-line CSV-to-JSON tool (Python standard library). The operator notice pre-authorised gates G1-G3 for that app and withheld G4, so the run stopped after the deployment guide.
+
+| | |
+|---|---|
+| Subagent calls | 17 (business-analyst 1, requirement-analyst 1, solution-architect 2, task-planner 1, ai-coding-agent 3, unit-test 2, security 2, performance 1, code-reviewer 1, documentation-generator 1, qa 1, deploy-planner 1) |
+| Cost and time | $2.32 as reported by the CLI for the whole session; about 10 minutes |
+| Tests | 56 unit tests, **re-run independently afterwards: 56/56 pass**. The qa-agent also reported 39 checks against 10 acceptance criteria (agent-reported, not re-run) |
+| Caught by review | a Medium crash (`--delimiter '"'` raised a traceback instead of exit 2), fixed; exit 2 with a clean message was confirmed by hand. One Low (embedded newline broke the one-line stderr format), fixed |
+| Checked by hand | file/stdin input, `--pretty`, `--delimiter`, `--output`, and exit codes 3, 4, 5 for a missing file, short row and duplicate header |
+| Not shown | POSIX and older Python versions (Windows, Python 3.14 only); no git repo was created because `git init` needed an approval nobody could give |
+
+What this run exposed in the skill, fixed in v1.2.1: the orchestrator batched independent tasks into one review (now allowed only for Low/Medium, independent, disjoint-file tasks, verdict per task); it skipped re-verification after the fix round (now an explicit rule); it accepted an analyst's proposed defaults instead of halting because the run was pre-authorised (now an explicit, bounded exception); and it named the run folder `RUN-001` (now `YYYYMMDD-<slug>`).
+
 ## What it does not show
 
-One small, greenfield, single-language app. Nothing here shows behaviour on a large existing codebase, on other stacks, or at team scale. An independent review of this package (before v1.2.0) found real problems that were then fixed: agent-name namespacing under plugin install, hard-coded connector tool names, an over-eager guardrail, and overstated safety claims. See the CHANGELOG.
+Two small, greenfield, single-language apps. Nothing here shows behaviour on a large existing codebase, on other stacks, or at team scale. An independent review of this package (before v1.2.0) found real problems that were then fixed: agent-name namespacing under plugin install, hard-coded connector tool names, an over-eager guardrail, and overstated safety claims. See the CHANGELOG.

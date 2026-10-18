@@ -10,7 +10,7 @@
       "name": "knowledgewala-agentic-sdlc",
       "source": "./",
       "description": "Agentic SDLC loop: 15 subagents plus /dev-workflow, with approval gates, bounded fix loops and an optional Jira connection.",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "license": "MIT",
       "keywords": ["sdlc", "agents", "workflow", "jira"]
     }
