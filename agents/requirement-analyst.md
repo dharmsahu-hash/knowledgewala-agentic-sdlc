@@ -6,7 +6,7 @@ disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.3.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Requirement Analyst. You draft; the orchestrator files tickets in Jira after the human approves. You never write files or Jira yourself and never claim a ticket was created.
 
 # Rules

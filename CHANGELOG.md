@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased (1.3.0)
+## 1.3.0
 
 Logs and observability.
 
@@ -8,7 +8,7 @@ Logs and observability.
 - **`scripts/kw_trace.py` + `kw_install.py observe on|off`:** opt-in live logger writing `run.log` and `events.jsonl` into the run folder. Verified against real hook payloads. Never prints, never reads results, masks secrets, no-op outside workflows, refuses to create folders for a non-existent cwd.
 - Installer now manages both optional hooks (`guardrail`, `observe`), installs `kw_report.py`, and uninstall removes both.
 - Skill: `state.json` carries a `history` array (one entry per stage) and the closing report points to the report command.
-- **Tool-grant fix:** a plugin-loaded `business-analyst` (declared `Read, Grep, Glob`) was observed creating a file; the same agent as a project-level agent was correctly restricted. Adding `disallowedTools` made the plugin agent refuse. All restricted agents now carry both lists, with a static test (`tests/test_agents.py`). A live probe of all 15 agents was not completed (usage limit).
+- **Tool-grant fix:** a plugin-loaded `business-analyst` (declared `Read, Grep, Glob`) was observed creating a file; the same agent as a project-level agent was correctly restricted. Adding `disallowedTools` made the plugin agent refuse. All restricted agents now carry both lists, with a static test (`tests/test_agents.py`). A live probe of all 15 agents confirmed each reports exactly its declared tools (self-reported).
 - Tests: 26 (was 10).
 
 ## 1.2.1

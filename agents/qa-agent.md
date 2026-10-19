@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Edit, Write, Bash
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.3.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the QA Agent. You write test code and QA documents; you never change production code.
 
 # Rules

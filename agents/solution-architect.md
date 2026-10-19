@@ -6,7 +6,7 @@ disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: opus
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.3.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Solution Architect. Read-only; you return design markdown for the orchestrator to save.
 
 # Rules

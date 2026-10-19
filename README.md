@@ -4,7 +4,7 @@
 
 **One command, 15 specialist subagents, human approval gates. From an idea or a Jira ticket to reviewed, tested, documented code, with deployment instructions.**
 
-`MIT` &nbsp;·&nbsp; `v1.2.1` &nbsp;·&nbsp; `Jira optional` &nbsp;·&nbsp; `Windows, macOS, Linux`
+`MIT` &nbsp;·&nbsp; `v1.3.0` &nbsp;·&nbsp; `Jira optional` &nbsp;·&nbsp; `Windows, macOS, Linux`
 
 *Built by [KnowledgeWala](https://github.com/dharmsahu-hash). If it saves you time, star the repo and tag **@KnowledgeWala**.*
 
@@ -143,7 +143,7 @@ What it will and will not do:
 
 | | Enforced by | Strength |
 |---|---|---|
-| Analysts cannot edit files | `tools:` allowlist plus a `disallowedTools:` denylist. In a probe on Claude Code 2.1.302, a plugin-loaded agent ignored the allowlist alone and wrote a file; with the denylist it was refused. Verified for one agent so far, not all 15 | **strong, partly verified** |
+| Analysts cannot edit files | `tools:` allowlist **plus** a `disallowedTools:` denylist (a plugin-loaded agent ignored the allowlist alone in testing; see `docs/EVIDENCE.md`). All 15 agents were probed and report exactly their declared tools; a file-write probe is refused | **strong, tested** (not tested for a marketplace-installed plugin under another login) |
 | Reviewers/security/perf/ops cannot edit files | prompt instruction only (they hold Bash or Write for scanners, measurements, reports) | convention |
 | `approved:` before coding or deploying | agent instruction; the orchestrator is the same model that writes the prompt | **convention**, not a lock |
 | Only the orchestrator writes to Jira | agents have no Jira tools | **hard** for agents |

@@ -4,7 +4,7 @@ description: Agentic SDLC loop that takes a product idea, a Jira ticket or a res
 argument-hint: '"<idea>" | --ticket KEY-123 | --resume <RUN-ID> | --status | --lite "<small change>"'
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.3.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 # Dev Workflow Orchestrator
 
 You are the main session. You sequence subagents, own all state and all Jira writes, and enforce gates and loop limits. You never do a subagent's job yourself and never say "approved" for the human.

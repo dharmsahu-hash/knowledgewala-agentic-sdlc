@@ -42,6 +42,21 @@ To test the packaging, a headless Claude Code session loaded the plugin copy fet
 
 What this run exposed in the skill, fixed in v1.2.1: the orchestrator batched independent tasks into one review (now allowed only for Low/Medium, independent, disjoint-file tasks, verdict per task); it skipped re-verification after the fix round (now an explicit rule); it accepted an analyst's proposed defaults instead of halting because the run was pre-authorised (now an explicit, bounded exception); and it named the run folder `RUN-001` (now `YYYYMMDD-<slug>`).
 
+## Tool-grant probes (plugin agents ignored `tools` alone)
+
+The second run showed the `business-analyst` (declared `tools: Read, Grep, Glob`) creating a file. A controlled probe asked an agent to write a file, or to list its tools, under different loading modes (Claude Code 2.1.302):
+
+| Test | How the agent was loaded | Result |
+|---|---|---|
+| A | plugin, headless (`--plugin-dir`), `tools` allowlist only | **file written**; agent listed the full toolset (Write, Edit, Bash, ...) |
+| B | project-level agent, interactive session | refused (`NO_WRITE_TOOL`); tools `Read, Grep, Glob` |
+| C | project-level agent, headless session | refused; tools `Read, Grep, Glob` |
+| D | plugin, headless, allowlist **plus** `disallowedTools` | refused; no file written; tools `Read, Grep, Glob` |
+
+The official docs describe `tools` as an allowlist and do not exempt plugin agents, so test A is either a Claude Code behaviour in this version or specific to `--plugin-dir`; it was not tested with a marketplace-installed plugin under a different login. The mitigation is to deny what an agent must not have, in addition to listing what it has. v1.3.0 does this for the 12 restricted agents and adds a static test (`tests/test_agents.py`).
+
+After the change, all 15 agents were asked for their exact tool names in a plugin-loaded session: **15/15 matched their declared tools**. These lists are self-reported by the agents, so they are strong evidence, not a proof; the file-write probes (A, D) are the direct evidence.
+
 ## What it does not show
 
 Two small, greenfield, single-language apps. Nothing here shows behaviour on a large existing codebase, on other stacks, or at team scale. An independent review of this package (before v1.2.0) found real problems that were then fixed: agent-name namespacing under plugin install, hard-coded connector tool names, an over-eager guardrail, and overstated safety claims. See the CHANGELOG.

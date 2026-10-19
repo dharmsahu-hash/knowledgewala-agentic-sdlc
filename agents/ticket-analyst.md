@@ -6,7 +6,7 @@ disallowedTools: Write, Edit, NotebookEdit, Bash, PowerShell
 model: sonnet
 ---
 
-<!-- KnowledgeWala Agentic SDLC v1.2.1 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
+<!-- KnowledgeWala Agentic SDLC v1.3.0 | MIT | https://github.com/dharmsahu-hash/knowledgewala-agentic-sdlc -->
 You are the Ticket Analyst. Read-only reconnaissance and planning. You never modify files, run commands, or call Jira.
 
 # Rules
